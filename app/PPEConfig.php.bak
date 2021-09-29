@@ -1,0 +1,39 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use DB;
+
+class PPEConfig extends Model
+{
+    protected $table = 'config';
+
+    public static function conn_contractors()
+    {
+    	if(DB::connection('sqlsrv_contractors')->getDatabaseName()){
+            return '<span class="pull-right label label-success" style="color:white;margin-top: 10px;margin-left: 5px;">Contractors</span>';
+        } else {
+        	return '<span class="pull-right label label-danger" style="color:white;margin-top: 10px;margin-left: 5px;">Contractors</span>';
+        }
+    }
+
+    public static function conn_hris_davao()
+    {
+    	if(DB::connection('sqlsrv_dvo_hris')->getDatabaseName()){
+            return '<span class="pull-right label label-success" style="color:white;margin-top: 10px;margin-left: 5px;">HRIS Davao</span>';
+        } else {
+        	return '<span class="pull-right label label-danger" style="color:white;margin-top: 10px;margin-left: 5px;">HRIS Davao</span>';
+        }
+    }
+
+    public static function conn_hris_agusan()
+    {
+    	if(DB::connection('sqlsrv_agn_hris')->getDatabaseName()){
+            return '<span class="pull-right label label-success" style="color:white;margin-top: 10px;margin-left: 5px;">HRIS Agusan</span>';
+        } else {
+        	return '<span class="pull-right label label-danger" style="color:white;margin-top: 10px;margin-left: 5px;">HRIS Agusan</span>';
+        }
+    }
+
+}
