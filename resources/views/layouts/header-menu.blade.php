@@ -25,6 +25,11 @@
 					<li>
 						<a href="{{ route('ppe-types.index') }}"><i class="fa fa-bookmark-o"></i> PPE Type </a>
 					</li>
+
+					<li>
+						<a href="{{ route('roles.index') }}"><i class="fa fa-bookmark-o"></i> Roles </a>
+					</li>
+					
 					@if(auth()->user()->role == 'admin')
 					<li>
 						<a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Users </a>

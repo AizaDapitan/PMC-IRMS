@@ -41,6 +41,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/ppe-item-delete','ItemTypeController@item_delete')->name('ppe-item.delete');
 	Route::post('/ppe-item-multiple-delete','ItemTypeController@item_multiple_delete')->name('ppe-item.multiple-delete');
 
+	//Roles
+	Route::resource('/roles','RoleController');
+	Route::post('/role-update','RoleController@role_update')->name('role.update');
+	
 	Route::resource('/users','UserController');
 	Route::post('/user-change-status','UserController@change_status')->name('user.change-status');
 	Route::post('/user-reset-password','UserController@reset_password')->name('user.reset-password');
