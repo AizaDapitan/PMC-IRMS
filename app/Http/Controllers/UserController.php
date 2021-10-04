@@ -8,14 +8,19 @@ use Illuminate\Support\Str;
 
 use App\User;
 use Auth;
+use App\Role;
+use App\Services\UserService;
+use App\Notifications\EmailNotification;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(
+        UserService $userService
+        // RoleRightService $roleRightService
+    ) {
+        $this->userService = $userService;
+        // $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
         $pagename = 'User List';
@@ -58,8 +63,10 @@ class UserController extends Controller
     public function create()
     {
         $pagename = 'Create User';
+        
+        $roles = Role::where('active', '1')->get();
 
-        return view('maintenance.user.create',compact('pagename'));
+        return view('maintenance.user.create',compact('pagename','roles'));
     }
 
     /**
@@ -70,32 +77,41 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {   
-        Validator::make($request->all(), [
-            'username' => 'required|unique:users,name',
-            'employee' => 'required',
-            'password' => [
-                'required',
-                'max:150',
-                'min:8',
-                'regex:/[a-z]/', // must contain at least one lowercase letter
-                'regex:/[A-Z]/', // must contain at least one uppercase letter
-                'regex:/[0-9]/', // must contain at least one digit
-                'regex:/[@$!%*#?&]/', // must contain a special character
-            ],
-            'password_confirmation' => 'required|same:password',
-        ])->validate();
-
-        User::create([
-            'name' => $request->employee,
-            'username' => $request->username,
-            'password' => \Hash::make($request->password),
-            'role' => $request->role,
-            'location' => $request->location,
-            'status' => 'ACTIVE',
-            'remember_token' => Str::random(60)
+        $request->validate([
+            
+            'username' => 'required|unique:users',
+            'employee' => 'required',            
+            'role_id' => 'required',
+            'email' => 'required|email|unique:users',
+           
         ]);
 
-        return redirect(route('users.index'))->with('success','User has been added.');
+         // 'password' => [
+            //     'required',
+            //     'max:150',
+            //     'min:8',
+            //     'regex:/[a-z]/', // must contain at least one lowercase letter
+            //     'regex:/[A-Z]/', // must contain at least one uppercase letter
+            //     'regex:/[0-9]/', // must contain at least one digit
+            //     'regex:/[@$!%*#?&]/', // must contain a special character
+            // ],
+            // 'password_confirmation' => 'required|same:password',
+
+       
+                $result = $this->userService->create($request);
+                $user = User::orderBy('id','desc')->first();
+                if ($request->session()->get('success') == "User has been added successfully!") 
+                {
+                    $user->notify(new EmailNotification($user));
+                    
+                    return redirect(route('users.index'))->with('success','User has been added.');
+                }
+                else
+                {
+                    return $result;
+                }
+        
+       
     }
 
     /**
@@ -121,7 +137,8 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        return view('maintenance.user.edit',compact('pagename','user'));
+        $roles = Role::where('active', '1')->get();
+        return view('maintenance.user.edit',compact('pagename','user','roles'));
     }
 
     /**
@@ -133,13 +150,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::find($id)->update([
-            'username' => $request->username,
-            'location' => $request->location,
-            'role' => $request->role
-        ]);
-
-        return redirect(route('users.index'))->with('success','User details has been updated.');
+        $result = $this->userService->update($request, $id);
+        if ($request->session()->get('success') == 'User has been updated successfull!') {
+            return redirect(route('users.index'))->with('success', 'User details has been updated.');
+        } else {
+            return $result;
+        }
     }
 
     /**
@@ -163,7 +179,7 @@ class UserController extends Controller
     public function reset_password(Request $request)
     {
         User::find($request->userid)->update([
-            'password' => \Hash::make('P@ssw0rd')
+            'password' => \Hash::make('password')
         ]);
 
         return back()->with('success','User password has been resetted.');

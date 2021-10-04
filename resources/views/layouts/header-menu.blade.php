@@ -29,6 +29,10 @@
 					<li>
 						<a href="{{ route('roles.index') }}"><i class="fa fa-bookmark-o"></i> Roles </a>
 					</li>
+
+					<li>
+						<a href="{{ route('permissions.index') }}"><i class="fa fa-bookmark-o"></i> Permissions </a>
+					</li>					
 					
 					@if(auth()->user()->role == 'admin')
 					<li>

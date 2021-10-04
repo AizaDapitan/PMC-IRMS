@@ -77,7 +77,6 @@ class IssuanceHeaderController extends Controller
     public function create()
     {
         $pagename = 'Create New Issuance';
-
         if(
             DB::connection('sqlsrv_agn_hris')->getDatabaseName() && 
             DB::connection('sqlsrv_dvo_hris')->getDatabaseName() && 
@@ -346,6 +345,7 @@ class IssuanceHeaderController extends Controller
 
     public function employees(Request $request)
     {
+
         $keyword = $request->q;
 
         $agusanEmployee = HRISAgusanEmployee::where('Active',1)->where('EmpID','like',"%$keyword%")->orWhere('LName','like',"%$keyword%")->get();

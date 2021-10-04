@@ -60,6 +60,13 @@
 								@enderror
 							</div>
 							<div class="form-group">
+								<label class="control-label">Email Address</label>
+								<input type="email" class="form-control  @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email',$user->email) }}" placeholder="email@gmail.com">
+								@error('email')
+								<span class="text-danger">{{ $message }}</span>
+								@enderror
+							</div>
+							<div class="form-group">
 								<label class="control-label">Location*</label>
 								<select name="location" class="bs-select form-control">
 									<option @if($user->location == 'MILL') selected @endif value="MILL">Mill</option>
@@ -68,15 +75,16 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Role*</label>
-								<select class="bs-select form-control" name="role">
-									<option value="user">User</option>
-									<option value="approver">Approver</option>
+								<select class="bs-select form-control" name="role_id" id="role_id">
+									@foreach($roles as $role)
+										<option value="{{ $role['id'] }}" {{ ($role['id'] == $user->role_id) ? 'selected' : '' }} >{{ $role['name'] }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
 						<div class="form-actions right">
 							<button type="submit" class="btn green">Update</button>
-							<button type="button" class="btn default">Cancel</button>
+							<a href="{{ route('users.index') }}" type="button" class="btn default">Cancel</a>
 						</div>
 					</form>
 					<!-- END FORM-->

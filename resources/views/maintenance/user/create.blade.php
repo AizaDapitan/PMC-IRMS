@@ -4,6 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-select/bootstrap-select.min.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/select2/select2.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/jquery-multi-select/css/multi-select.css') }}"/>
+	
 @endsection
 
 @section('content')
@@ -47,6 +48,12 @@
 					</div>
 				</div>
 				<div class="portlet-body form">
+				@if(session('errorMesssage'))
+					<div id="errdiv" class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+						{!! session('errorMesssage') !!}
+					</div>
+            	@endif
 					<!-- BEGIN FORM-->
 					<form autocomplete="off" action="{{ route('users.store') }}" method="post">
 						@csrf
@@ -65,8 +72,15 @@
 								@error('username')
 								<span class="text-danger">{{ $message }}</span>
 								@enderror
-							</div>
+							</div>	
 							<div class="form-group">
+								<label class="control-label">Email Address</label>
+								<input type="email" class="form-control  @error('email') is-invalid @enderror" name="email" id="email" placeholder="email@gmail.com">
+								@error('email')
+								<span class="text-danger">{{ $message }}</span>
+								@enderror
+							</div>
+							<!-- <div class="form-group">
 								<label class="control-label">Password</label>
 								<input type="password" class="form-control  @error('password') is-invalid @enderror" name="password" id="password" placeholder="********">
 								<small class=><b>Minimum of eight (8) alphanumeric characters (combination of letters and numbers) with at least one (1) upper case and one (1) special character.</b></small><br>
@@ -80,7 +94,7 @@
 								@error('password_confirmation')
 								<span class="text-danger">{{ $message }}</span>
 								@enderror
-							</div>
+							</div> -->
 							<div class="form-group">
 								<label class="control-label">Location*</label>
 								<select name="location" class="bs-select form-control">
@@ -90,15 +104,16 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Role*</label>
-								<select class="bs-select form-control" name="role">
-									<option value="user">User</option>
-									<option value="approver">Approver</option>
+								<select class="bs-select form-control" name="role_id" id="role_id">
+									@foreach($roles as $role)
+										<option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
 						<div class="form-actions right">
 							<button type="submit" class="btn green">Save</button>
-							<button type="button" class="btn default">Cancel</button>
+							<a href="{{ route('users.index') }}" type="button" class="btn default">Cancel</a>
 						</div>
 					</form>
 					<!-- END FORM-->
@@ -140,7 +155,7 @@
         }
 
 		$("#select2_employee").select2({
-            placeholder: "Search for a PMC employee",
+            placeholder: "Search for a PMC employee id or lastname",
             minimumInputLength: 3,
             ajax: {
                 url: "{{ route('ajax-employees') }}",
@@ -152,9 +167,13 @@
                 },
                 results: function (response) { 
                     return {
-                        results: response.employees
+                        results: response
                     };
                 }
+            },
+			
+            id: function(e){
+            	return e.EmpID;
             },
             formatResult: employeeFormatResult,
             formatSelection: employeeFormatSelection,

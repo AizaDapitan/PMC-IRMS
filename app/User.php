@@ -24,7 +24,9 @@ class User extends Authenticatable
         'status',
         'isLocked',
         'lockedOn',
-        'remember_token'
+        'remember_token',
+        'email',
+        'role_id'
     ];
 
     /**

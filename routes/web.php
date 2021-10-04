@@ -44,7 +44,13 @@ Route::group(['middleware' => ['auth']], function () {
 	//Roles
 	Route::resource('/roles','RoleController');
 	Route::post('/role-update','RoleController@role_update')->name('role.update');
+
+	//Permissions
+	Route::resource('/permissions','PermissionController');
+	Route::post('/permission-update','PermissionController@permission_update')->name('permission.update');
 	
+	
+	// Users
 	Route::resource('/users','UserController');
 	Route::post('/user-change-status','UserController@change_status')->name('user.change-status');
 	Route::post('/user-reset-password','UserController@reset_password')->name('user.reset-password');

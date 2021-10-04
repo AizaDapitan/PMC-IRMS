@@ -79,6 +79,9 @@
 								<th>
 									<i class="fa fa-briefcase"></i> Username
 								</th>
+								<th>
+									<i class="fa fa-briefcase"></i> Role
+								</th>
 								<th class="hidden-xs">
 									<i class="fa fa-question"></i> Location
 								</th>
@@ -96,6 +99,7 @@
 								<tr>
 									<td>{{ $user->name }}</td>
 									<td>{{ $user->username }}</td>
+									<td>{{ $user->role }}</td>
 									<td>{{ $user->location }}</td>
 									<td>{{ $user->status }}</td>
 									<td>{{ $user->lastdatemodified }}</td>
