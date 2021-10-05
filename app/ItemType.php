@@ -3,11 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable  as AuditableContract;
+use OwenIt\Auditing\Auditable;
 
-class ItemType extends Model
+class ItemType extends Model implements AuditableContract
 {
+    use Auditable;
     protected $table = "types";
 	protected $fillable = ['main', 'type', 'addedBy'];
+    protected $auditInclude = ['main', 'type', 'addedBy'];
     public $timestamps = true;
 
     public function getLastDateModifiedAttribute()

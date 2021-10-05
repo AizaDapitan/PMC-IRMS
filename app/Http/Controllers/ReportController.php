@@ -7,11 +7,23 @@ use App\IssuanceDetail;
 use App\IssuanceHeader;
 use \Carbon\Carbon;
 use Response;
+use App\Services\ReportService;
+use App\Services\UserService;
+use \OwenIt\Auditing\Models\Audit;
 
 use DB;
 
 class ReportController extends Controller
 {
+    public function __construct(
+        // RoleRightService $roleRightService,
+        ReportService $reportService,
+        UserService $userService
+    ) {
+        $this->reportService = $reportService;
+        // $this->roleRightService = $roleRightService;
+        $this->userService = $userService;
+    }
     public function issuance_summary(Request $request)
     {
     	$pagename = 'Issuance Request Summary';
@@ -219,5 +231,43 @@ class ReportController extends Controller
             fclose($file);
         };
         return Response::stream($callback, 200, $headers);
+    }
+    public function auditLogs(Request $request)
+    {
+        $dateFrom = now()->toDateString();
+        $dateTo = now()->toDateString();
+        $userid = 0;
+        if (isset($request->dateFrom)) {
+            $dateFrom = $request->dateFrom;
+        }
+        if (isset($request->dateTo)) {
+            $dateTo = $request->dateTo;
+        }
+        if (isset($request->userid)) {
+            $userid = $request->userid;
+        }
+        // $rolesPermissions = $this->roleRightService->hasPermissions("Audit Logs");
+
+        $users =  $this->userService->all()->where('status', 'ACTIVE')->where('username', '<>', '')->sortBy('name');
+        // if (!$rolesPermissions['view']) {
+        //     abort(401);
+        // }
+
+        $audits =Audit::when(isset($dateTo), function($q) use($dateFrom, $dateTo){
+            $q->whereBetween('created_at',  [$dateFrom.' 00:00:00', $dateTo.' 23:59:59']);
+        })
+       ->when(!isset($dateTo), function($q) use($dateFrom){
+            $q->whereDate('created_at', $dateFrom);
+        })
+        ->when($userid != 0, function($q) use($userid){
+            $q->where('user_id', $userid);
+        })
+      ->get();
+
+        $saveLogs = $this->reportService->create("Audit Logs", $request);;
+        return view('reports.audits', [
+            'audits' => $audits,
+            'users' => $users
+        ]);
     }
 }

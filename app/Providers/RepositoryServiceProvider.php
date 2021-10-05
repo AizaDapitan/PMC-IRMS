@@ -7,59 +7,23 @@ use Illuminate\Support\ServiceProvider;
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $group = array(
-        // drivers
-        array(
-            'interface' => 'App\Repositories\Interfaces\DriverRepositoryInterface',
-            'repository' => 'App\Repositories\DriverRepository',
-            'service' => 'App\Services\DriverService',
-            'model' => [
-                'App\Models\DriverDetail',
-                'App\Models\DriverLicense',
-                'App\Models\LicenseAttachment',
-                'App\Models\IndividualViolation',
-            ],
-        ),
-        // violations
-        array(
-            'interface' => 'App\Repositories\Interfaces\ViolationRepositoryInterface',
-            'repository' => 'App\Repositories\ViolationRepository',
-            'service' => 'App\Services\ViolationService',
-            'model' => [
-                'App\Models\IndividualViolation',
-                'App\Models\ViolationInfo',
-                'App\Models\ViolationFile',
-            ],
-        ),
-        // contractor companies
-        array(
-            'interface' => 'App\Repositories\Interfaces\ContractorCompanyRepositoryInterface',
-            'repository' => 'App\Repositories\ContractorCompanyRepository',
-            'service' => 'App\Services\ContractorCompanyService',
-            'model' => 'App\Models\ContractorCompany',
-        ),
-        // vehicles
-        array(
-            'interface' => 'App\Repositories\Interfaces\VehicleRepositoryInterface',
-            'repository' => 'App\Repositories\VehicleRepository',
-            'service' => 'App\Services\VehicleService',
-            'model' => 'App\Models\VehicleInfo',
-        ),
-        // users
-        array(
-            'interface' => 'App\Repositories\Interfaces\UserRepositoryInterface',
-            'repository' => 'App\Repositories\UserRepository',
-            'service' => 'App\Services\UserService',
-            'model' => [
-                'App\User',
-            ],
-        ),
         // Role
         array(
             'interface' => 'App\Repositories\Interfaces\RoleRepositoryInterface',
             'repository' => 'App\Repositories\RoleRepository',
             'service' => 'App\Services\RoleService',
             'model' => [
-                'App\Models\Role',
+                'App\Role',
+            ],
+        ),
+
+        // users
+        array(
+            'interface' => 'App\Repositories\Interfaces\UserRepositoryInterface',
+            'repository' => 'App\Repositories\UserRepository',
+            'service' => 'App\Services\UserService',
+            'model' => [
+                'App\User'
             ],
         ),
 
@@ -69,7 +33,26 @@ class RepositoryServiceProvider extends ServiceProvider
             'repository' => 'App\Repositories\PermissionRepository',
             'service' => 'App\Services\PermissionService',
             'model' => [
-                'App\Models\Permission',
+                'App\Permission',
+            ],
+        ),
+        // Audit
+        array(
+            'interface' => 'App\Repositories\Interfaces\AuditRepositoryInterface',
+            'repository' => 'App\Repositories\AuditRepository',
+            'service' => 'App\Services\AuditService',
+            'model' => [
+                '\OwenIt\Auditing\Models\Audit',
+            ],
+        ),
+        
+        // Role Access Rights
+        array(
+            'interface' => 'App\Repositories\Interfaces\RoleRightRepositoryInterface',
+            'repository' => 'App\Repositories\RoleRightRepository',
+            'service' => 'App\Services\RoleRightService',
+            'model' => [
+                'App\RolesPermissions',
             ],
         ),
         // User Access Rights
@@ -78,19 +61,19 @@ class RepositoryServiceProvider extends ServiceProvider
             'repository' => 'App\Repositories\UserRightRepository',
             'service' => 'App\Services\UserRightService',
             'model' => [
-                'App\Models\UsersPermissions',
+                'App\UsersPermissions',
             ],
-        ),
-        // Role Access Rights
+        ),    
+        // applications
         array(
-            'interface' => 'App\Repositories\Interfaces\RoleRightRepositoryInterface',
-            'repository' => 'App\Repositories\RoleRightRepository',
-            'service' => 'App\Services\RoleRightService',
+            'interface' => 'App\Repositories\Interfaces\ApplicationRepositoryInterface',
+            'repository' => 'App\Repositories\ApplicationRepository',
+            'service' => 'App\Services\ApplicationService',
             'model' => [
-                'App\Models\RolesPermissions',
+                'App\Application',
             ],
-        ),
-        // Report Access Rights
+        ),                                   
+        // Report
         array(
             'interface' => 'App\Repositories\Interfaces\ReportRepositoryInterface',
             'repository' => 'App\Repositories\ReportRepository',
@@ -98,23 +81,17 @@ class RepositoryServiceProvider extends ServiceProvider
             'model' => [
                 '\OwenIt\Auditing\Models\Audit',
             ],
-        ),
-
-        // applications
-        array(
-            'interface' => 'App\Repositories\Interfaces\ApplicationRepositoryInterface',
-            'repository' => 'App\Repositories\ApplicationRepository',
-            'service' => 'App\Services\ApplicationService',
+        ),     
+         // Audit 
+         array(
+            'interface' => 'App\Repositories\Interfaces\AuditRepositoryInterface',
+            'repository' => 'App\Repositories\AuditRepository',
+            'service' => 'App\Services\AuditService',
             'model' => [
-                'App\Models\Application',
+                '\OwenIt\Auditing\Models\Audit',
             ],
-        ),        
+        ),   
     );
-    /**
-     * Register services.
-     *
-     * @return void
-     */
     public function register()
     {
         foreach ($this->group as $key => $item) {

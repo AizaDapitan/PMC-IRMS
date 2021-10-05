@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 
 Auth::routes();
 
+Route::get('logout', 'Auth\LoginController@logout');
+// Route::get('/','Auth\LoginController@showLoginForm')->name('login');
+Route::get('/','Auth\LoginController@index')->name('login');
+Route::post('login', 'Auth\LoginController@login')->name('login.submit'); // login submit
 Route::group(['middleware' => ['auth']], function () {
 	Route::resource('/issuances','IssuanceHeaderController');
+	// Route::get('issuances','IssuanceHeaderController@index')->name('issuances');
 	Route::post('/issuance-cancel','IssuanceHeaderController@cancel')->name('issuance.cancel');
 	Route::get('/ajax-get-ppe-item-details','IssuanceHeaderController@ajax_get_item_details')->name('ajax-get-ppe-item-details');
 
@@ -48,13 +52,26 @@ Route::group(['middleware' => ['auth']], function () {
 	//Permissions
 	Route::resource('/permissions','PermissionController');
 	Route::post('/permission-update','PermissionController@permission_update')->name('permission.update');
-	
-	
+		
 	// Users
 	Route::resource('/users','UserController');
 	Route::post('/user-change-status','UserController@change_status')->name('user.change-status');
 	Route::post('/user-reset-password','UserController@reset_password')->name('user.reset-password');
 
+	//Role Access right routes
+	Route::group(['prefix' => 'roleaccessrights'], function () {
+		Route::get('/', 'RoleRightController@index')->name('maintenance.roleaccessrights');
+		Route::post('store', 'RoleRightController@store')->name('maintenance.roleaccessrights.store');
+		Route::get('store', 'RoleRightController@store')->name('maintenance.roleaccessrights.store');
+	});   
+
+	//User Access right routes
+	Route::group(['prefix' => 'useraccessrights'], function () {
+		Route::get('/', 'UserRightController@index')->name('maintenance.useraccessrights');
+		Route::post('store', 'UserRightController@store')->name('maintenance.useraccessrights.store');
+		Route::get('store', 'UserRightController@store')->name('maintenance.useraccessrights.store');
+	});
+		
 	// Reports
 	Route::get('/report/issuance-request-summary','ReportController@issuance_summary')->name('report.issuance-summary');
 	Route::post('/export-issuance-summary','ReportController@export_issuance_summary')->name('export.issuance_summary');
@@ -67,5 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/change-password','UserController@change_password')->name('change-password');
 	Route::put('/update-password', 'UserController@update_password')->name('update-password');
+
+	Route::get('audit-logs', 'ReportController@auditLogs')->name('report.audit-logs');
 });
 

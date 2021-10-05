@@ -32,13 +32,20 @@
 
 					<li>
 						<a href="{{ route('permissions.index') }}"><i class="fa fa-bookmark-o"></i> Permissions </a>
-					</li>					
+					</li>
 					
-					@if(auth()->user()->role == 'admin')
 					<li>
 						<a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Users </a>
 					</li>
-					@endif
+
+					<li>
+						<a href="{{ route('maintenance.roleaccessrights') }}"><i class="fa fa-bookmark-o"></i> Role Access Rights </a>
+					</li>
+
+					<li>
+						<a href="{{ route('maintenance.useraccessrights') }}"><i class="fa fa-bookmark-o"></i> User Access Rights </a>
+					</li>					
+
 				</ul>
 			</li>
 			<li class="classic-menu-dropdown @if (\Route::current()->getName() == 'report.issuance-summary' || \Route::current()->getName() == 'report.cancelled-issuances' || \Route::current()->getName() == 'report.unserve-issuances') active @endif">
@@ -52,6 +59,9 @@
 					</li>
 					<li>
 						<a href="{{ route('report.unserve-issuances') }}"><i class="fa fa-user"></i> Unserve Issuance Request </a>
+					</li>
+					<li>
+						<a href="{{ route('report.audit-logs') }}"><i class="fa fa-user"></i> Audit Logs </a>
 					</li>
 				</ul>
 			</li>

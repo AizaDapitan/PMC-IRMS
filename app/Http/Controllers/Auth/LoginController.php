@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Services\AuditService;
 
 class LoginController extends Controller
 {
@@ -31,15 +33,41 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        AuditService $auditService)
     {
-        $this->middleware('guest')->except('logout');
+        $this->auditService = $auditService;
+        // $this->middleware('guest')->except('logout');
+    }
+    public function index()
+    {
+        return auth()->check() ? redirect()->route('issuances.index') : view('auth.login');
+    }
+    public function login(Request $request)
+    {
+        $checker = auth()->attempt([
+            'username' => $request->username,
+            'password' => $request->password,
+            'status' => 'ACTIVE',
+        ]);
+        if ($checker) {
+            $saveLogs = $this->auditService->create($request,"Login User : ". auth()->user()->username,"Login");            
+            return redirect()->route('issuances.index');
+        } else {
+            return redirect()->back()->withErrors('Invalid login credentials.');
+        }
+    }
+    
+    public function logout(Request $request)
+    {
+        $saveLogs = $this->auditService->create($request,"Logout User : ". auth()->user()->username,"Logout");
+        return auth()->logout() ?? redirect()->route('login');
     }
 }

@@ -25,14 +25,12 @@ class UserService
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
-                'locked' => $user->locked,
-                'locked_at' => $user->locked_at,
-                'approver' => $user->approver,
                 'role' => $user->role,
-                'active' => $user->active,
+                'location' => $user->location,
+                'status' => $user->status,
+                'islocked' => $user->islocked,
+                'lockedOn' => $user->lockedOn,
                 'role_id' => $user->role_id,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
                 'email' => $user->email,
             ]);
         }

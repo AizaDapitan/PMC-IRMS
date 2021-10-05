@@ -114,7 +114,6 @@ class IssuanceHeaderController extends Controller
 
         if($request->issuance_type == 'employee'){
             $employee = explode(' : ',$request->employee);
-
             if(HRISAgusanEmployee::where('EmpID',$employee[0])->exists()){
                 $employeeData = HRISAgusanEmployee::where('EmpID',$employee[0])->first();
             }

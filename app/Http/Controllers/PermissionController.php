@@ -37,7 +37,7 @@ class PermissionController extends Controller
         $modules = Module::orderBy('description','asc')->get();
         $permissions = $permissions->paginate($pagination);
         
-        return view('maintenance.permission.index',compact('pagename','permissions','modules',));
+        return view('maintenance.permission.index',compact('pagename','permissions','modules'));
                         
     }
 

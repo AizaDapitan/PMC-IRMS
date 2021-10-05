@@ -44,6 +44,10 @@ License: You must have a valid license purchased only from themeforest(the above
 	<link href="{{ asset('assets/global/css/plugins.css') }}" rel="stylesheet" type="text/css"/>
 	<link href="{{ asset('assets/admin/layout/css/layout.css') }}" rel="stylesheet" type="text/css"/>
 	<!-- END THEME STYLES -->
+	<!-- Styles -->
+	<!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link href="{{ url('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 
 	@yield('pagecss')
 
@@ -190,6 +194,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
 	<script src="{{ asset('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}"></script>
 	<!-- END PAGE LEVEL SCRIPTS -->
+	<script src="{{ url('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+	<script src="{{ url('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+	<!-- <script src="{{ url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script> -->
+	<!-- END PAGE LEVEL PLUGINS --> 
+	<script src="{{ url('assets/global/scripts/table-datatables-buttons.js') }}" type="text/javascript"></script>
 
 	@yield('pagejs')
 
