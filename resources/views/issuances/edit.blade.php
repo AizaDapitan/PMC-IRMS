@@ -136,7 +136,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Receiver*</label>
-										<input type="text" name="receiver" id="receiver" class="form-control" value="@if($issuance->isContractor > 0) {{ $issuance->receiverId }} @endif">
+										<input type="text" name="receiver" id="receiver" class="form-control" value="@if($issuance->isContractor > 0) {{ $issuance->receiverId }} @endif" required maxlength="50">
 										<span class="text-danger" id="span_receiver" style="display: none;">Receiver field is required.</span>
 									</div>
 								</div>

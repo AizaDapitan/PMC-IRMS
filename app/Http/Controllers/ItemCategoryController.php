@@ -117,7 +117,7 @@ class ItemCategoryController extends Controller
 
     public function category_update(Request $request)
     {
-        ItemCategory::find($request->catid)->update(['category' => $request->name]);
+        ItemCategory::find($request->catid)->update(['category' => $request->name,'addedBy' => auth()->user()->username]);
 
         return back()->with('success','Category details has been updated.');
     }

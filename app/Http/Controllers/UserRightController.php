@@ -40,6 +40,8 @@ class UserRightController extends Controller
         ->where('status', '<>', 'INACTIVE')
         ->where('username', '<>', '')
         ->where('role', '<>', 'ADMIN')
+        ->where('role', '<>', 'admin')
+        ->where('role', '<>', 'Admin')
         
         ->sortBy('name');
         $permissions = $this->permissionService->all()->where('active', '1')->sortBy('description');

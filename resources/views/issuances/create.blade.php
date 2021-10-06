@@ -132,7 +132,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Receiver*</label>
-										<input type="text" name="receiver" id="receiver" class="form-control">
+										<input type="text" name="receiver" id="receiver" class="form-control" required maxlength="50">
 										<span class="text-danger" id="span_receiver" style="display: none;">Receiver field is required.</span>
 									</div>
 								</div>
