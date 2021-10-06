@@ -177,7 +177,7 @@
 						</p>
 						<label>Name *</label>
 						<p>
-							<input required class="form-control" type="text" name="name" id="name" required maxlength="50">
+							<input required class="form-control" type="text" name="name" id="name" required maxlength="90">
 						</p>
 					</div>
 				</div>
@@ -210,7 +210,7 @@
 						<label>Name *</label>
 						<p>
 							<input type="hidden" name="id" id="eitemid">
-							<input required class="form-control" type="text" name="name" id="ename" required maxlength="50">
+							<input required class="form-control" type="text" name="name" id="ename" required maxlength="90">
 						</p>
 					</div>
 				</div>

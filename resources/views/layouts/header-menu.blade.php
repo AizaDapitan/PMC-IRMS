@@ -58,7 +58,7 @@
 						<a href="{{ route('report.cancelled-issuances') }}"><i class="fa fa-user"></i> Cancelled Issuance Request </a>
 					</li>
 					<li>
-						<a href="{{ route('report.unserve-issuances') }}"><i class="fa fa-user"></i> Unserve Issuance Request </a>
+						<a href="{{ route('report.unserve-issuances') }}"><i class="fa fa-user"></i> Unserved Issuance Request </a>
 					</li>
 					<li>
 						<a href="{{ route('report.audit-logs') }}"><i class="fa fa-user"></i> Audit Logs </a>

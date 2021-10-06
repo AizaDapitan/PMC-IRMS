@@ -87,7 +87,7 @@
 								</th>
 								<th>Status</th>
 								<th>
-									<i class="fa fa-question"></i> Created At
+									<i class="fa fa-question"></i> Created
 								</th>
 								<th>
 									<i class="fa fa-bookmark"></i> Actions

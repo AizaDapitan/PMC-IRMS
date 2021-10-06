@@ -160,7 +160,7 @@ class ReportController extends Controller
 
     public function unserve(Request $request)
     {	
-    	$pagename = 'Unserve Issuance Request';
+    	$pagename = 'Unserved Issuance Request';
         $departments = IssuanceHeader::distinct()->where('isContractor',2)->orderBy('receiver','asc')->get(['receiver']);
 
         $qry = "select d.itemDesc, d.itemColor, d.itemSize,d.qty, d.qtyReleased, h.controlNum, h.receiver, h.location, h.docDate, h.status, h.isContractor from is_detail d left join is_header h on h.id = d.headerId where h.status = 'P' and d.qty <> d.qtyReleased ";

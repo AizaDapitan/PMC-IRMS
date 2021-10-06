@@ -47,7 +47,7 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a href="{{ route('report.unserve-issuances') }}">Unserve Issuance Request</a>
+				<a href="{{ route('report.unserve-issuances') }}">Unserved Issuance Request</a>
 			</li>
 		</ul>
 		<!-- END PAGE TITLE & BREADCRUMB-->
@@ -121,7 +121,7 @@
 					<h2 id="rpt_company">PHILSAGA MINING CORPORATION</h2>
 					<h5 id="rpt_address">Bayugan 3, Rosario, Agusan Del Sur</h5>
 					<br>
-					<h3>Unserve Issuance Request</h3>
+					<h3>Unserved Issuance Request</h3>
 					<p>
 						@if(app('request')->input('startdate') != null) 
 							{{ app('request')->input('startdate') }} @else {{ \Carbon\Carbon::today()->startOfMonth()->format('Y-m-d') }} 
@@ -161,7 +161,7 @@
 								<td>{{ $r->qtyReleased }}</td>
 							</tr>
 						@empty
-							<tr><td colspan="10" class="text-center">No unserve request found.</td></tr>
+							<tr><td colspan="10" class="text-center">No unserved request found.</td></tr>
 						@endforelse
 					</tbody>
 				</table>
