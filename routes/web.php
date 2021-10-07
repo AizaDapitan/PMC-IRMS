@@ -103,5 +103,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::put('/update-password', 'UserController@update_password')->name('update-password');
 
 	Route::get('audit-logs', 'ReportController@auditLogs')->name('report.audit-logs');
+	Route::get('error-logs', 'ReportController@errorLogs')->name('report.error-logs');
 });
 

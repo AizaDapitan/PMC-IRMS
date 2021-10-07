@@ -44,6 +44,10 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'd' => 
+        array (
+            'danielme85\\LaravelLogToDB\\' => 26,
+        ),
         'X' => 
         array (
             'XdgBaseDir\\' => 11,
@@ -183,6 +187,10 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'danielme85\\LaravelLogToDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -4996,6 +5004,18 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
+        'danielme85\\LaravelLogToDB\\Commands\\LogCleanerUpper' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Commands/LogCleanerUpper.php',
+        'danielme85\\LaravelLogToDB\\Jobs\\SaveNewLogEvent' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Jobs/SaveNewLogEvent.php',
+        'danielme85\\LaravelLogToDB\\LogToDB' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/LogToDB.php',
+        'danielme85\\LaravelLogToDB\\LogToDbCustomLoggingHandler' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/LogToDbCustomLoggingHandler.php',
+        'danielme85\\LaravelLogToDB\\LogToDbHandler' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/LogToDbHandler.php',
+        'danielme85\\LaravelLogToDB\\Models\\BindsDynamically' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Models/BindsDynamically.php',
+        'danielme85\\LaravelLogToDB\\Models\\DBLog' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Models/DBLog.php',
+        'danielme85\\LaravelLogToDB\\Models\\DBLogException' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Models/DBLogException.php',
+        'danielme85\\LaravelLogToDB\\Models\\DBLogMongoDB' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Models/DBLogMongoDB.php',
+        'danielme85\\LaravelLogToDB\\Models\\LogToDbCreateObject' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Models/LogToDbCreateObject.php',
+        'danielme85\\LaravelLogToDB\\Processors\\PhpVersionProcessor' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/Processors/PhpVersionProcessor.php',
+        'danielme85\\LaravelLogToDB\\ServiceProvider' => __DIR__ . '/..' . '/danielme85/laravel-log-to-db/src/ServiceProvider.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
         'phpDocumentor\\Reflection\\DocBlockFactory' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',
         'phpDocumentor\\Reflection\\DocBlockFactoryInterface' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactoryInterface.php',

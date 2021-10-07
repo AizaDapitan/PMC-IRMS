@@ -11,6 +11,7 @@ use App\Services\ReportService;
 use App\Services\UserService;
 use \OwenIt\Auditing\Models\Audit;
 use App\Services\RoleRightService;
+use App\Log;
 
 use DB;
 
@@ -302,5 +303,31 @@ class ReportController extends Controller
             'audits' => $audits,
             'users' => $users
         ]);
+    }
+    public function errorLogs(Request $request)
+    {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Error Logs");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+        $dateFrom = now()->toDateString();
+        $dateTo = now()->toDateString();
+        if (isset($request->dateFrom)) {
+            $dateFrom = $request->dateFrom;
+        }
+        if (isset($request->dateTo)) {
+            $dateTo = $request->dateTo;
+        }
+
+        $errors = Log::when(isset($dateTo), function($q) use($dateFrom, $dateTo){
+            $q->whereBetween('created_at', [$dateFrom.' 00:00:00', $dateTo.' 23:59:59']);
+        })
+       ->when(!isset($dateTo), function($q) use($dateFrom){
+            $q->whereDate('created_at', $dateFrom);
+        })
+        ->get();
+        $saveLogs = $this->reportService->create("Error Logs", $request);;
+        return view('reports.error', ['errors' => $errors]);
     }
 }

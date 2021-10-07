@@ -35,7 +35,7 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a href="{{ route('ppe-types.index') }}">User Actions Report</a>
+				<a href="{{ route('report.audit-logs') }}">User Actions Report</a>
 			</li>
 		</ul>
 		<!-- END PAGE TITLE & BREADCRUMB-->

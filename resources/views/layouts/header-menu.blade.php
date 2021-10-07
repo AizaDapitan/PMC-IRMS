@@ -67,6 +67,9 @@
 					<li>
 						<a href="{{ route('report.audit-logs') }}"><i class="fa fa-user"></i> Audit Logs </a>
 					</li>
+					<li>
+						<a href="{{ route('report.error-logs') }}"><i class="fa fa-user"></i> Error Logs </a>
+					</li>
 				</ul>
 			</li>
 			<li>

@@ -36,11 +36,26 @@ return [
 
     'channels' => [
         'stack' => [
+            'name' => 'Log Stack',
             'driver' => 'stack',
-            'channels' => ['single'],
-            'ignore_exceptions' => false,
+            'channels' => ['sqlsrv','daily'],
         ],
-
+        'sqlsrv' => [
+            'driver' => 'custom',
+            'via' => danielme85\LaravelLogToDB\LogToDbHandler::class,
+            'model' => App\Log::class, //Your own optional custom model
+            'level' => env('APP_LOG_LEVEL', 'error'),
+            'connection' => 'sqlsrv',
+            'collection' => 'log',
+            'detailed' => true,
+            'name' => 'logToDB',
+            'queue' => false,
+            'queue_name' => 'logQueue',
+            'queue_connection' => 'sqlsrv',
+            'max_records' => 1000,
+            'max_hours' => 24
+             
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
