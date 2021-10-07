@@ -44,7 +44,11 @@
 
 					<li>
 						<a href="{{ route('maintenance.useraccessrights') }}"><i class="fa fa-bookmark-o"></i> User Access Rights </a>
-					</li>					
+					</li>	
+
+					<li>
+						<a href="{{ route('maintenance.application.index') }}"><i class="fa fa-bookmark-o"></i> Application </a>
+					</li>									
 
 				</ul>
 			</li>

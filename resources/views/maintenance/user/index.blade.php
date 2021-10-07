@@ -54,7 +54,11 @@
 						</div>
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
-							<a class="btn blue" href="{{ route('users.create') }}">Add New User<i class="fa fa-plus"></i></a>
+							@if($create)
+								<a class="btn blue" href="{{ route('users.create') }}">Add New User<i class="fa fa-plus"></i></a>
+							@else
+								<button disabled class="btn blue">Add New User<i class="fa fa-plus"></i></button>
+							@endif
 						</div>
 						<div class="btn-group pull-right">
 							<form id="search_form" class="form-inline">
@@ -106,12 +110,22 @@
 									<td>
 										<a href="#" class="btn btn-xs blue-madison">View</a>
 										
-										@if($user->status == 'ACTIVE')
-										<a href="{{ route('users.edit',$user->id) }}" class="btn btn-xs blue">Edit</a>
-										<a href="#" class="btn btn-xs red" onclick="change_status('{{$user->id}}','INACTIVE')">Deactivate</a>
-										<a href="#" class="btn btn-xs green" onclick="reset_password('{{$user->id}}')">Reset Password</a>
+										@if($edit)
+											@if($user->status == 'ACTIVE')
+											<a href="{{ route('users.edit',$user->id) }}" class="btn btn-xs blue">Edit</a>
+											<a href="#" class="btn btn-xs red" onclick="change_status('{{$user->id}}','INACTIVE')">Deactivate</a>
+											<a href="#" class="btn btn-xs green" onclick="reset_password('{{$user->id}}')">Reset Password</a>
+											@else
+											<a href="#" class="btn btn-xs green" onclick="change_status('{{$user->id}}','ACTIVE')">Activate</a>
+											@endif
 										@else
-										<a href="#" class="btn btn-xs green" onclick="change_status('{{$user->id}}','ACTIVE')">Activate</a>
+											@if($user->status == 'ACTIVE')
+											<button disabled href="{{ route('users.edit',$user->id) }}" class="btn btn-xs blue">Edit</button>
+											<button disabled href="#" class="btn btn-xs red" onclick="change_status('{{$user->id}}','INACTIVE')">Deactivate</button>
+											<button disabled href="#" class="btn btn-xs green" onclick="reset_password('{{$user->id}}')">Reset Password</button>
+											@else
+											<button disabled href="#" class="btn btn-xs green" onclick="change_status('{{$user->id}}','ACTIVE')">Activate</button>
+											@endif
 										@endif
 									</td>
 								</tr>

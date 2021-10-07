@@ -20,6 +20,9 @@ Route::get('logout', 'Auth\LoginController@logout');
 // Route::get('/','Auth\LoginController@showLoginForm')->name('login');
 Route::get('/','Auth\LoginController@index')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login.submit'); // login submit
+
+Route::get('adminlogin/admin', 'Auth\LoginController@adminLogin')->name('login.adminLogin'); // login
+Route::post('adminsubmit/admin', 'Auth\LoginController@adminSubmit')->name('login.adminsubmit'); // login submit
 Route::group(['middleware' => ['auth']], function () {
 	Route::resource('/issuances','IssuanceHeaderController');
 	// Route::get('issuances','IssuanceHeaderController@index')->name('issuances');
@@ -71,6 +74,20 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::post('store', 'UserRightController@store')->name('maintenance.useraccessrights.store');
 		Route::get('store', 'UserRightController@store')->name('maintenance.useraccessrights.store');
 	});
+
+	// Application routes
+	Route::group(['prefix' => 'application/maintenance'], function () {
+		Route::get('/', 'ApplicationController@index')->name('maintenance.application.index');
+		Route::post('store', 'ApplicationController@store')->name('maintenance.application.store');
+		Route::post('edit', 'ApplicationController@edit')->name('maintenance.application.edit');
+		Route::put('update', 'ApplicationController@update')->name('maintenance.application.update');
+		Route::delete('{id}/destroy', 'ApplicationController@destroy')->name('maintenance.application.destroy');
+		Route::any('/search', 'ApplicationController@search')->name('maintenance.application.search');
+		Route::get('{id}/destroy', 'ApplicationController@destroy')->name('maintenance.application.destroy');
+		Route::get('systemDown', 'ApplicationController@systemDown')->name('maintenance.application.systemDown');
+		Route::get('systemUp', 'ApplicationController@systemUp')->name('maintenance.application.systemUp');
+		Route::get('create_indexing', 'ApplicationController@create_indexing')->name('maintenance.application.create_indexing');
+	});  	
 		
 	// Reports
 	Route::get('/report/issuance-request-summary','ReportController@issuance_summary')->name('report.issuance-summary');

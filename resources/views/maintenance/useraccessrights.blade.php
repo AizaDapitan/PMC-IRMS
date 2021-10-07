@@ -85,7 +85,7 @@
 									<i class="fa fa-briefcase"></i> Update
 								</th>
 								<th>
-									<i class="fa fa-briefcase"></i> Delete
+									<i class="fa fa-briefcase"></i> Delete/Cancel
 								</th>
 								<th>
 									<i class="fa fa-briefcase"></i> Print

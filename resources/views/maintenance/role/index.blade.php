@@ -55,7 +55,12 @@
 						</div>
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
-							<a class="btn blue" data-toggle="modal" href="#basic" onclick="addRole()"> Add New </a>						
+							@if($create)
+								<a class="btn blue" data-toggle="modal" href="#basic" onclick="addRole()"> Add New </a>	
+							@else
+								<button disabled class="btn blue" data-toggle="modal" href="#basic"> Add New </button>	
+							@endif
+
 						</div>
 						<div class="btn-group pull-right">
 							<form id="search_form" class="form-inline">
@@ -104,7 +109,12 @@
                                         </td>
 
 										<td>
-											<a href="#" class="btn default btn-xs blue" onclick="update_role('{{$role->id}}','{{$role->name}}','{{$role->description}}','{{$role->active}}')">Edit </a>
+											@if($edit)
+												<a href="#" class="btn default btn-xs blue" onclick="update_role('{{$role->id}}','{{$role->name}}','{{$role->description}}','{{$role->active}}')">Edit </a>
+											@else
+												<button disabled href="#" class="btn default btn-xs blue">Edit </button>
+											@endif
+
 										</td>
 									</tr>
 								@empty

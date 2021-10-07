@@ -54,17 +54,25 @@
 								</div>
 						</div>
 						<div class="btn-group">
-							<button class="btn default dropdown-toggle" data-toggle="dropdown">Actions <i class="fa fa-angle-down"></i>
-							</button>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#" onclick="delete_categories()"><i class="fa fa-trash-o"></i> Delete</a>
-								</li>
-							</ul>
+							@if($delete)
+								<button class="btn default dropdown-toggle" data-toggle="dropdown">Actions <i class="fa fa-angle-down"></i>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+											<a href="#" onclick="delete_categories()"><i class="fa fa-trash-o"></i> Delete</a>
+									</li>
+								</ul>
+							@else
+								<button disabled class="btn default dropdown-toggle" data-toggle="dropdown">Actions <i class="fa fa-angle-down"></i> </button>
+							@endif
 						</div>
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
-							<button class="btn blue" data-toggle="modal" href="#add-category">Add New <i class="fa fa-plus"></i></button>
+							@if($create)
+								<button class="btn blue" data-toggle="modal" href="#add-category">Add New <i class="fa fa-plus"></i></button>
+							@else
+								<button disabled class="btn blue" data-toggle="modal" href="#add-category">Add New <i class="fa fa-plus"></i></button>
+							@endif
 						</div>
 						<div class="btn-group pull-right">
 							<form id="search_form" class="form-inline">
@@ -116,8 +124,16 @@
 											{{ $category->addedBy }}
 										</td>
 										<td>
-											<a href="#" class="btn default btn-xs blue" onclick="update_category('{{$category->id}}','{{$category->category}}')">Edit </a>
-											<a href="#" class="btn default btn-xs red" onclick="category_delete('{{$category->id}}')">Delete </a>
+											@if($edit)
+												<a href="#" class="btn default btn-xs blue" onclick="update_category('{{$category->id}}','{{$category->category}}')">Edit </a>
+											@else
+												<button disabled href="#" class="btn default btn-xs blue" >Edit </button>
+											@endif
+											@if($delete)
+												<a href="#" class="btn default btn-xs red" onclick="category_delete('{{$category->id}}')">Delete </a>
+											@else
+												<button disabled href="#" class="btn default btn-xs red" >Delete </button>
+											@endif
 										</td>
 									</tr>
 								@empty

@@ -500,6 +500,7 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
     );
 
     public static $classMap = array (
+        'App\\Application' => __DIR__ . '/../..' . '/app/Application.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Contractors' => __DIR__ . '/../..' . '/app/Contractors.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -510,6 +511,7 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         'App\\HRISDavaoEmployee' => __DIR__ . '/../..' . '/app/HRISDavaoEmployee.php',
         'App\\HRISDavaoPosition' => __DIR__ . '/../..' . '/app/HRISDavaoPosition.php',
         'App\\Helpers\\Setting' => __DIR__ . '/../..' . '/app/Helpers/Setting.php',
+        'App\\Http\\Controllers\\ApplicationController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApplicationController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -551,7 +553,9 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RepositoryServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RepositoryServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Repositories\\ApplicationRepository' => __DIR__ . '/../..' . '/app/Repositories/ApplicationRepository.php',
         'App\\Repositories\\AuditRepository' => __DIR__ . '/../..' . '/app/Repositories/AuditRepository.php',
+        'App\\Repositories\\Interfaces\\ApplicationRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interfaces/ApplicationRepositoryInterface.php',
         'App\\Repositories\\Interfaces\\AuditRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interfaces/AuditRepositoryInterface.php',
         'App\\Repositories\\Interfaces\\PermissionRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interfaces/PermissionRepositoryInterface.php',
         'App\\Repositories\\Interfaces\\ReportRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interfaces/ReportRepositoryInterface.php',
@@ -568,6 +572,7 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         'App\\Resolvers\\UserResolver' => __DIR__ . '/../..' . '/app/Resolvers/UserResolver.php',
         'App\\Role' => __DIR__ . '/../..' . '/app/Role.php',
         'App\\RolesPermissions' => __DIR__ . '/../..' . '/app/RolesPermissions.php',
+        'App\\Services\\ApplicationService' => __DIR__ . '/../..' . '/app/Services/ApplicationService.php',
         'App\\Services\\AuditService' => __DIR__ . '/../..' . '/app/Services/AuditService.php',
         'App\\Services\\PermissionService' => __DIR__ . '/../..' . '/app/Services/PermissionService.php',
         'App\\Services\\ReportService' => __DIR__ . '/../..' . '/app/Services/ReportService.php',

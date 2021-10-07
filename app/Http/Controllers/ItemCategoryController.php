@@ -4,37 +4,55 @@ namespace App\Http\Controllers;
 
 use App\ItemCategory;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class ItemCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+
+        $rolesPermissions = $this->roleRightService->hasPermissions("PPE Items");
+
+        $view = $rolesPermissions['view'];
+        if (!$view) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+
         $pagename = 'PPE Items';
         $pagination = 10;
 
         $categories = ItemCategory::whereNotNull('id');
 
-        if(isset($_GET['orderBy']) || isset($_GET['search'])){
-            if(isset($_GET['orderBy'])){
-                $categories->orderBy($_GET['orderBy'],$_GET['sortBy']);
+        if (isset($_GET['orderBy']) || isset($_GET['search'])) {
+            if (isset($_GET['orderBy'])) {
+                $categories->orderBy($_GET['orderBy'], $_GET['sortBy']);
             }
 
-            if(isset($_GET['search'])){
-                $categories->where('category','like','%'.$_GET['search'].'%');
+            if (isset($_GET['search'])) {
+                $categories->where('category', 'like', '%' . $_GET['search'] . '%');
             }
-
         } else {
-            $categories->orderBy('updated_at','desc');
+            $categories->orderBy('updated_at', 'desc');
         }
 
         $categories = $categories->paginate($pagination);
-        
-        return view('maintenance.ppe-category.index',compact('pagename','categories'));
+
+        return view('maintenance.ppe-category.index', compact(
+            'pagename',
+            'categories',
+            'create',
+            'edit',
+            'delete'
+        ));
     }
 
     /**
@@ -55,19 +73,17 @@ class ItemCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if(ItemCategory::where('category',$request->name)->exists()){
+        if (ItemCategory::where('category', $request->name)->exists()) {
 
-            return back()->with('duplicate','Category is already in the list.');
-
+            return back()->with('duplicate', 'Category is already in the list.');
         } else {
             ItemCategory::create([
                 'category' => $request->name,
                 'addedBy' => auth()->user()->username,
             ]);
 
-            return back()->with('success','Category has been added.');
+            return back()->with('success', 'Category has been added.');
         }
-        
     }
 
     /**
@@ -119,24 +135,24 @@ class ItemCategoryController extends Controller
     {
         ItemCategory::find($request->catid)->update(['category' => $request->name,'addedBy' => auth()->user()->username]);
 
-        return back()->with('success','Category details has been updated.');
+        return back()->with('success', 'Category details has been updated.');
     }
 
     public function category_delete(Request $request)
     {
         ItemCategory::find($request->catid)->delete();
 
-        return back()->with('success','Category has been deleted.');
+        return back()->with('success', 'Category has been deleted.');
     }
 
     public function category_multiple_delete(Request $request)
     {
-        $ids = explode("|", rtrim($request->id,'|'));
+        $ids = explode("|", rtrim($request->id, '|'));
 
-        foreach($ids as $id){
+        foreach ($ids as $id) {
             ItemCategory::find($id)->delete();
         }
 
-        return back()->with('success','Selected categories has been deleted.');
+        return back()->with('success', 'Selected categories has been deleted.');
     }
 }

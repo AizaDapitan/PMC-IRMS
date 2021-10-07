@@ -36,12 +36,12 @@ class ReportService
             'user_agent' => $request->header('user-agent')
         ];
         $permission = $this->repository->create($data);
-
-        if ($permission) {
-            return redirect()->back()->with('success', 'Logs has been added successfully!');
-        } else {
-            return redirect()->back()->with('errors', 'Saving Logs failed.');
-        }
+        return redirect()->back();
+        // if ($permission) {
+        //     return redirect()->back()->with('success', 'Logs has been added successfully!');
+        // } else {
+        //     return redirect()->back()->with('errors', 'Saving Logs failed.');
+        // }
     }
 
 }

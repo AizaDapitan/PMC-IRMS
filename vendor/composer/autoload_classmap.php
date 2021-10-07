@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Application' => $baseDir . '/app/Application.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Contractors' => $baseDir . '/app/Contractors.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -16,6 +17,7 @@ return array(
     'App\\HRISDavaoEmployee' => $baseDir . '/app/HRISDavaoEmployee.php',
     'App\\HRISDavaoPosition' => $baseDir . '/app/HRISDavaoPosition.php',
     'App\\Helpers\\Setting' => $baseDir . '/app/Helpers/Setting.php',
+    'App\\Http\\Controllers\\ApplicationController' => $baseDir . '/app/Http/Controllers/ApplicationController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -57,7 +59,9 @@ return array(
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RepositoryServiceProvider' => $baseDir . '/app/Providers/RepositoryServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Repositories\\ApplicationRepository' => $baseDir . '/app/Repositories/ApplicationRepository.php',
     'App\\Repositories\\AuditRepository' => $baseDir . '/app/Repositories/AuditRepository.php',
+    'App\\Repositories\\Interfaces\\ApplicationRepositoryInterface' => $baseDir . '/app/Repositories/Interfaces/ApplicationRepositoryInterface.php',
     'App\\Repositories\\Interfaces\\AuditRepositoryInterface' => $baseDir . '/app/Repositories/Interfaces/AuditRepositoryInterface.php',
     'App\\Repositories\\Interfaces\\PermissionRepositoryInterface' => $baseDir . '/app/Repositories/Interfaces/PermissionRepositoryInterface.php',
     'App\\Repositories\\Interfaces\\ReportRepositoryInterface' => $baseDir . '/app/Repositories/Interfaces/ReportRepositoryInterface.php',
@@ -74,6 +78,7 @@ return array(
     'App\\Resolvers\\UserResolver' => $baseDir . '/app/Resolvers/UserResolver.php',
     'App\\Role' => $baseDir . '/app/Role.php',
     'App\\RolesPermissions' => $baseDir . '/app/RolesPermissions.php',
+    'App\\Services\\ApplicationService' => $baseDir . '/app/Services/ApplicationService.php',
     'App\\Services\\AuditService' => $baseDir . '/app/Services/AuditService.php',
     'App\\Services\\PermissionService' => $baseDir . '/app/Services/PermissionService.php',
     'App\\Services\\ReportService' => $baseDir . '/app/Services/ReportService.php',

@@ -31,6 +31,13 @@ class UserRightController extends Controller
     }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("User Rights");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
         $pagename = 'User Access Rights';
 
         $roles = auth()->user()->role;
@@ -46,17 +53,7 @@ class UserRightController extends Controller
         ->sortBy('name');
         $permissions = $this->permissionService->all()->where('active', '1')->sortBy('description');
         $modules = $this->permissionService->getModule()->sortBy('description');
-
-
-        //$rolesPermissions = $this->roleRightService->hasPermissions("User Rights");
-
-        //if (!$rolesPermissions['view']) {
-        //    abort(401);
-        //}
-
-        //$create = $rolesPermissions['create'];
-        $create = true; //$rolesPermissions['create'];
-                
+       
         return view('maintenance.useraccessrights',compact('pagename', 'users', 'permissions', 'modules', 'create'));
     }
 

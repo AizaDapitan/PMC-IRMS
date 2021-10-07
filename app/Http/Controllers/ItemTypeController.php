@@ -5,39 +5,56 @@ namespace App\Http\Controllers;
 use App\ItemCategory;
 use App\ItemType;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class ItemTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("PPE Type");
+
+        $view = $rolesPermissions['view'];
+        if (!$view) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
         $pagename = 'PPE Types';
         $pagination = 10;
 
         $items = ItemType::whereNotNull('id');
 
-        if(isset($_GET['orderBy']) || isset($_GET['search'])){
-            if(isset($_GET['orderBy'])){
-                $items->orderBy($_GET['orderBy'],$_GET['sortBy']);
+        if (isset($_GET['orderBy']) || isset($_GET['search'])) {
+            if (isset($_GET['orderBy'])) {
+                $items->orderBy($_GET['orderBy'], $_GET['sortBy']);
             }
 
-            if(isset($_GET['search'])){
-                $items->where('main','like','%'.$_GET['search'].'%')->orWhere('type','like','%'.$_GET['search'].'%');
+            if (isset($_GET['search'])) {
+                $items->where('main', 'like', '%' . $_GET['search'] . '%')->orWhere('type', 'like', '%' . $_GET['search'] . '%');
             }
-
         } else {
-            $items->orderBy('updated_at','desc');
+            $items->orderBy('updated_at', 'desc');
         }
 
         $items = $items->paginate($pagination);
 
-        $categories = ItemCategory::orderBy('category','asc')->get();
-        
-        return view('maintenance.ppe-item.index',compact('pagename','items','categories'));
+        $categories = ItemCategory::orderBy('category', 'asc')->get();
+
+        return view('maintenance.ppe-item.index', compact(
+            'pagename',
+            'items',
+            'categories',
+            'create',
+            'edit',
+            'delete'
+        ));
     }
 
     /**
@@ -58,8 +75,8 @@ class ItemTypeController extends Controller
      */
     public function store(Request $request)
     {
-        if(ItemType::where('type',$request->name)->exists()){
-            return back()->with('duplicate','PPE name is already in the list.');
+        if (ItemType::where('type', $request->name)->exists()) {
+            return back()->with('duplicate', 'PPE name is already in the list.');
         } else {
             ItemType::create([
                 'main' => $request->category,
@@ -67,9 +84,8 @@ class ItemTypeController extends Controller
                 'addedBy' => auth()->user()->username,
             ]);
 
-            return back()->with('success','PPE item has been added.');
+            return back()->with('success', 'PPE item has been added.');
         }
-        
     }
 
     /**
@@ -126,24 +142,24 @@ class ItemTypeController extends Controller
 
         ]);
 
-        return back()->with('success','PPE item details has been updated.');
+        return back()->with('success', 'PPE item details has been updated.');
     }
 
     public function item_delete(Request $request)
     {
         ItemType::find($request->itemid)->delete();
 
-        return back()->with('success','PPE item has been deleted.');
+        return back()->with('success', 'PPE item has been deleted.');
     }
 
     public function item_multiple_delete(Request $request)
     {
-        $ids = explode("|", rtrim($request->id,'|'));
+        $ids = explode("|", rtrim($request->id, '|'));
 
-        foreach($ids as $id){
+        foreach ($ids as $id) {
             ItemType::find($id)->delete();
         }
 
-        return back()->with('success','Selected PPE items has been deleted.');
+        return back()->with('success', 'Selected PPE items has been deleted.');
     }
 }

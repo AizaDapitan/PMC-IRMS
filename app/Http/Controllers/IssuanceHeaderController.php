@@ -16,6 +16,7 @@ use App\Contractors;
 use App\ItemCategory;
 use App\ItemType;
 use App\PPEConfig;
+use App\Services\RoleRightService;
 
 use DB;
 
@@ -26,47 +27,70 @@ class IssuanceHeaderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Issuance");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+
+
         $pagename = 'Issuance Request List';
         $pagination = 10;
 
         $issuances = IssuanceHeader::whereNotNull('id');
 
-        if(isset($_GET['orderBy']) || isset($_GET['search']) || isset($_GET['location']) || isset($_GET['type'])){
-            if(isset($_GET['orderBy'])){
-                $issuances->orderBy($_GET['orderBy'],$_GET['sortBy']);
+        if (isset($_GET['orderBy']) || isset($_GET['search']) || isset($_GET['location']) || isset($_GET['type'])) {
+            if (isset($_GET['orderBy'])) {
+                $issuances->orderBy($_GET['orderBy'], $_GET['sortBy']);
             }
 
-            if(isset($_GET['search'])){
-                $issuances->where('controlNum','like','%'.$_GET['search'].'%')
-                ->orWhere('receiver','like','%'.$_GET['search'].'%')
-                ->orWhere('receiverId','like','%'.$_GET['search'].'%');
+            if (isset($_GET['search'])) {
+                $issuances->where('controlNum', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('receiver', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('receiverId', 'like', '%' . $_GET['search'] . '%');
             }
 
-            if(isset($_GET['location'])){
-                $issuances->where('location',$_GET['location']);
+            if (isset($_GET['location'])) {
+                $issuances->where('location', $_GET['location']);
             }
 
-            if(isset($_GET['location'])){
-                $issuances->where('location',$_GET['location']);
+            if (isset($_GET['location'])) {
+                $issuances->where('location', $_GET['location']);
             }
 
-            if(isset($_GET['type'])){
-                if($_GET['type'] == 1){
-                    $issuances->where('isContractor',1);
-                } else{
-                    $issuances->where('isContractor','<>',1);
-                }  
+            if (isset($_GET['type'])) {
+                if ($_GET['type'] == 1) {
+                    $issuances->where('isContractor', 1);
+                } else {
+                    $issuances->where('isContractor', '<>', 1);
+                }
             }
-
         } else {
-            $issuances->orderBy('updated_at','desc');
+            $issuances->orderBy('updated_at', 'desc');
         }
 
         $issuances = $issuances->paginate($pagination);
 
-        return view('issuances.index',compact('pagename','issuances'));
+        return view('issuances.index', compact(
+            'pagename',
+            'issuances',
+            'create',
+            'edit',
+            'delete',
+            'print'
+        ));
     }
 
     /**
@@ -76,19 +100,29 @@ class IssuanceHeaderController extends Controller
      */
     public function create()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Issuance");
+
+        if (!$rolesPermissions['create']) {
+            abort(401);
+        }
         $pagename = 'Create New Issuance';
-        if(
-            DB::connection('sqlsrv_agn_hris')->getDatabaseName() && 
-            DB::connection('sqlsrv_dvo_hris')->getDatabaseName() && 
-            DB::connection('sqlsrv_contractors')->getDatabaseName()){
+        if (
+            DB::connection('sqlsrv_agn_hris')->getDatabaseName() &&
+            DB::connection('sqlsrv_dvo_hris')->getDatabaseName() &&
+            DB::connection('sqlsrv_contractors')->getDatabaseName()
+        ) {
 
-            $agusanDept =  HRISAgusanDepartment::orderBy('DeptDesc','asc')->get();
-            $davaoDept  = HRISDavaoDepartment::orderBy('DeptDesc','asc')->get();
+            $agusanDept =  HRISAgusanDepartment::orderBy('DeptDesc', 'asc')->get();
+            $davaoDept  = HRISDavaoDepartment::orderBy('DeptDesc', 'asc')->get();
 
-            $departments = array_unique(array_merge($agusanDept->toArray(),$davaoDept->toArray()),SORT_REGULAR);            
-            $items       = ItemCategory::orderBy('category','asc')->get();
+            $departments = array_unique(array_merge($agusanDept->toArray(), $davaoDept->toArray()), SORT_REGULAR);
+            $items       = ItemCategory::orderBy('category', 'asc')->get();
 
-            return view('issuances.create',compact('pagename','departments','items'));
+            return view('issuances.create', compact(
+                'pagename',
+                'departments',
+                'items'
+            ));
         } else {
             return view('issuances.connection-error');
         }
@@ -112,14 +146,14 @@ class IssuanceHeaderController extends Controller
         $remarks = $data['remarks'];
 
 
-        if($request->issuance_type == 'employee'){
-            $employee = explode(' : ',$request->employee);
-            if(HRISAgusanEmployee::where('EmpID',$employee[0])->exists()){
-                $employeeData = HRISAgusanEmployee::where('EmpID',$employee[0])->first();
+        if ($request->issuance_type == 'employee') {
+            $employee = explode(' : ', $request->employee);
+            if (HRISAgusanEmployee::where('EmpID', $employee[0])->exists()) {
+                $employeeData = HRISAgusanEmployee::where('EmpID', $employee[0])->first();
             }
 
-            if(HRISDavaoEmployee::where('EmpID',$employee[0])->exists()){
-                $employeeData = HRISDavaoEmployee::where('EmpID',$employee[0])->first();
+            if (HRISDavaoEmployee::where('EmpID', $employee[0])->exists()) {
+                $employeeData = HRISDavaoEmployee::where('EmpID', $employee[0])->first();
             }
 
             $header = IssuanceHeader::create([
@@ -137,7 +171,7 @@ class IssuanceHeaderController extends Controller
             ]);
         }
 
-        if($request->issuance_type == 'department'){
+        if ($request->issuance_type == 'department') {
             $header = IssuanceHeader::create([
                 'docDate' => $request->docdate,
                 'receiver' => $request->department,
@@ -153,7 +187,7 @@ class IssuanceHeaderController extends Controller
             ]);
         }
 
-        if($request->issuance_type == 'contractor'){
+        if ($request->issuance_type == 'contractor') {
             $header = IssuanceHeader::create([
                 'docDate' => $request->docdate,
                 'receiver' => $request->contractor,
@@ -169,10 +203,10 @@ class IssuanceHeaderController extends Controller
             ]);
         }
 
-        if($header){
-            IssuanceHeader::find($header->id)->update(['controlNum' => str_pad($header->id, 6, "0", STR_PAD_LEFT )]);
+        if ($header) {
+            IssuanceHeader::find($header->id)->update(['controlNum' => str_pad($header->id, 6, "0", STR_PAD_LEFT)]);
 
-            foreach($items as $key => $item){
+            foreach ($items as $key => $item) {
 
                 IssuanceDetail::create([
                     'headerId' => $header->id,
@@ -185,7 +219,7 @@ class IssuanceHeaderController extends Controller
             }
         }
 
-        return redirect(route('issuances.index'))->with('success','Issuance request has been added.');
+        return redirect(route('issuances.index'))->with('success', 'Issuance request has been added.');
     }
 
     /**
@@ -207,17 +241,22 @@ class IssuanceHeaderController extends Controller
      */
     public function edit($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Issuance");
+
+        if (!$rolesPermissions['edit']) {
+            abort(401);
+        }
         $pagename = 'Edit Issuance';
 
         $issuance = IssuanceHeader::find($id);
 
-        $agusanDept =  HRISAgusanDepartment::orderBy('DeptDesc','asc')->get();
-        $davaoDept  = HRISDavaoDepartment::orderBy('DeptDesc','asc')->get();
+        $agusanDept =  HRISAgusanDepartment::orderBy('DeptDesc', 'asc')->get();
+        $davaoDept  = HRISDavaoDepartment::orderBy('DeptDesc', 'asc')->get();
 
-        $departments = array_merge($agusanDept->toArray(),$davaoDept->toArray());
-        $items       = ItemCategory::orderBy('category','asc')->get();
+        $departments = array_merge($agusanDept->toArray(), $davaoDept->toArray());
+        $items       = ItemCategory::orderBy('category', 'asc')->get();
 
-        return view('issuances.edit',compact('pagename','departments','items','issuance'));
+        return view('issuances.edit', compact('pagename', 'departments', 'items', 'issuance'));
     }
 
     /**
@@ -229,15 +268,15 @@ class IssuanceHeaderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->issuance_type == 'employee'){
-            $employee = explode(' : ',$request->employee);
+        if ($request->issuance_type == 'employee') {
+            $employee = explode(' : ', $request->employee);
 
-            if(HRISAgusanEmployee::where('EmpID',$employee[0])->exists()){
-                $employeeData = HRISAgusanEmployee::where('EmpID',$employee[0])->first();
+            if (HRISAgusanEmployee::where('EmpID', $employee[0])->exists()) {
+                $employeeData = HRISAgusanEmployee::where('EmpID', $employee[0])->first();
             }
 
-            if(HRISDavaoEmployee::where('EmpID',$employee[0])->exists()){
-                $employeeData = HRISDavaoEmployee::where('EmpID',$employee[0])->first();
+            if (HRISDavaoEmployee::where('EmpID', $employee[0])->exists()) {
+                $employeeData = HRISDavaoEmployee::where('EmpID', $employee[0])->first();
             }
 
             $header = IssuanceHeader::find($id)->update([
@@ -250,7 +289,7 @@ class IssuanceHeaderController extends Controller
             ]);
         }
 
-        if($request->issuance_type == 'department'){
+        if ($request->issuance_type == 'department') {
             $header = IssuanceHeader::find($id)->update([
                 'docDate' => $request->docdate,
                 'receiver' => $request->department,
@@ -261,7 +300,7 @@ class IssuanceHeaderController extends Controller
             ]);
         }
 
-        if($request->issuance_type == 'contractor'){
+        if ($request->issuance_type == 'contractor') {
             $header = IssuanceHeader::find($id)->update([
                 'docDate' => $request->docdate,
                 'receiver' => $request->contractor,
@@ -283,10 +322,10 @@ class IssuanceHeaderController extends Controller
         $issuedate = $data['issuedate'];
         $remarks = $data['remarks'];
 
-        if($header){
+        if ($header) {
 
-            foreach($items as $key => $item){
-                if($detailid[$key] == 0){
+            foreach ($items as $key => $item) {
+                if ($detailid[$key] == 0) {
                     \Log::info($id);
                     IssuanceDetail::create([
                         'headerId' => $id,
@@ -303,11 +342,11 @@ class IssuanceHeaderController extends Controller
                         'lastIssueDate' => $issuedate[$key],
                         'remarks' => $remarks[$key],
                     ]);
-                }  
+                }
             }
         }
 
-        return back()->with('success','Issuance request details has been updated.');
+        return back()->with('success', 'Issuance request details has been updated.');
     }
 
     /**
@@ -324,22 +363,27 @@ class IssuanceHeaderController extends Controller
     {
         IssuanceDetail::find($request->issuanceid)->delete();
 
-        return back()->with('success','PPE item has been removed.');
+        return back()->with('success', 'PPE item has been removed.');
     }
 
     public function cancel(Request $request)
     {
         IssuanceHeader::find($request->issuanceid)->update(['status' => 'C']);
 
-        return back()->with('success','Issuance request has been cancelled.');
+        return back()->with('success', 'Issuance request has been cancelled.');
     }
 
     public function print($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Issuance");
+
+        if (!$rolesPermissions['print']) {
+            abort(401);
+        }
         $issuance = IssuanceHeader::find($id);
         $glCode   = PPEConfig::find(1);
 
-        return view('issuances.print',compact('issuance','glCode'));
+        return view('issuances.print', compact('issuance', 'glCode'));
     }
 
     public function employees(Request $request)
@@ -347,22 +391,22 @@ class IssuanceHeaderController extends Controller
 
         $keyword = $request->q;
 
-        $agusanEmployee = HRISAgusanEmployee::where('Active',1)->where('EmpID','like',"%$keyword%")->orWhere('LName','like',"%$keyword%")->get();
-        $davaoEmployee  = HRISDavaoEmployee::where('Active',1)->where('EmpID','like',"%$keyword%")->orWhere('LName','like',"%$keyword%")->get();
+        $agusanEmployee = HRISAgusanEmployee::where('Active', 1)->where('EmpID', 'like', "%$keyword%")->orWhere('LName', 'like', "%$keyword%")->get();
+        $davaoEmployee  = HRISDavaoEmployee::where('Active', 1)->where('EmpID', 'like', "%$keyword%")->orWhere('LName', 'like', "%$keyword%")->get();
 
         $employees = array_merge($agusanEmployee->toArray(), $davaoEmployee->toArray());
-		
-		$d = [];
 
-        foreach($employees as $employee) {
+        $d = [];
+
+        foreach ($employees as $employee) {
             array_push($d, [
-                'EmpID' => $employee['EmpID'] ,
-                'FName' => mb_convert_encoding( $employee['FName'], 'UTF-8', 'ISO-8859-1') ,
-                'MName' => mb_convert_encoding( $employee['MName'] , 'UTF-8', 'ISO-8859-1') ,
-                'LName' => mb_convert_encoding( $employee['LName'] , 'UTF-8', 'ISO-8859-1')
+                'EmpID' => $employee['EmpID'],
+                'FName' => mb_convert_encoding($employee['FName'], 'UTF-8', 'ISO-8859-1'),
+                'MName' => mb_convert_encoding($employee['MName'], 'UTF-8', 'ISO-8859-1'),
+                'LName' => mb_convert_encoding($employee['LName'], 'UTF-8', 'ISO-8859-1')
             ]);
         }
-		
+
         return response()->json($d, 200, [], JSON_UNESCAPED_UNICODE);
     }
 
@@ -370,7 +414,7 @@ class IssuanceHeaderController extends Controller
     {
         $keyword = $request->q;
 
-        $contractors = Contractors::where('isActive',1)->where('code','like',"%$keyword%")->orWhere('lname','like',"%$keyword%")->get();
+        $contractors = Contractors::where('isActive', 1)->where('code', 'like', "%$keyword%")->orWhere('lname', 'like', "%$keyword%")->get();
 
 
         return response()->json(['contractors' => $contractors]);
@@ -378,12 +422,12 @@ class IssuanceHeaderController extends Controller
 
     public function ajax_get_item_details(Request $request)
     {
-        $item = ItemCategory::where('category',$request->item)->first();
-        $qry_type = ItemType::where('main',$request->item);
+        $item = ItemCategory::where('category', $request->item)->first();
+        $qry_type = ItemType::where('main', $request->item);
 
         $count = $qry_type->count();
         $types = $qry_type->get();
 
-        return response()->json(['item' => $item, 'count' => $count,'types' => $types]);
+        return response()->json(['item' => $item, 'count' => $count, 'types' => $types]);
     }
 }

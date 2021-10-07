@@ -180,6 +180,7 @@ class ReportController extends Controller
     }
 
     public function unserve(Request $request)
+<<<<<<< HEAD
     {
         $rolesPermissions = $this->roleRightService->hasPermissions("Unserve Issuance Request");
 
@@ -188,6 +189,11 @@ class ReportController extends Controller
         }
         $pagename = 'Unserve Issuance Request';
         $departments = IssuanceHeader::distinct()->where('isContractor', 2)->orderBy('receiver', 'asc')->get(['receiver']);
+=======
+    {	
+    	$pagename = 'Unserved Issuance Request';
+        $departments = IssuanceHeader::distinct()->where('isContractor',2)->orderBy('receiver','asc')->get(['receiver']);
+>>>>>>> 5fb53205849f40f39fe6795a4c064d6d32f5a6b8
 
         $qry = "select d.itemDesc, d.itemColor, d.itemSize,d.qty, d.qtyReleased, h.controlNum, h.receiver, h.location, h.docDate, h.status, h.isContractor from is_detail d left join is_header h on h.id = d.headerId where h.status = 'P' and d.qty <> d.qtyReleased ";
 

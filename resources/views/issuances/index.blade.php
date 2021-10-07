@@ -55,7 +55,11 @@
 						</div>
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
-							<a class="btn blue" href="{{ route('issuances.create') }}">Add New <i class="fa fa-plus"></i></a>
+							@if($create)
+								<a class="btn blue" href="{{ route('issuances.create') }}">Add New <i class="fa fa-plus"></i></a>
+							@else
+								<button disabled class="btn blue" href="{{ route('issuances.create') }}">Add New <i class="fa fa-plus"></i></a>
+							@endif
 						</div>
 						<div class="btn-group pull-right">
 							<form id="search_form" class="form-inline">
@@ -108,11 +112,23 @@
 										<td>{!! $issuance->requeststatus !!}</td>
 										<td>
 											<a href="#" class="btn btn-xs blue-madison" onclick="$('#detailsd{{$issuance->id}}').toggle()">View</a>
-											<a href="{{ route('issuance-print',$issuance->id) }}" target="_blank" class="btn btn-xs green-meadow">Print</a>
+											@if($print)
+												<a href="{{ route('issuance-print',$issuance->id) }}" target="_blank" class="btn btn-xs green-meadow">Print</a>
+											@else
+												<button disabled target="_blank" class="btn btn-xs green-meadow">Print</button>
+											@endif
 											@if($issuance->status == 'P')
 												@if($issuance->issuancestatus == 0)
-												<a href="{{ route('issuances.edit',$issuance->id) }}" class="btn btn-xs blue">Edit</a>
-												<a href="#" class="btn btn-xs red" onclick="cancel_issuance('{{$issuance->id}}','{{$issuance->controlNum}}')">Cancel</a>
+												@if($edit)
+													<a href="{{ route('issuances.edit',$issuance->id) }}" class="btn btn-xs blue">Edit</a>
+												@else
+													<button disabled class="btn btn-xs blue">Edit</button>
+												@endif
+												@if($delete)
+													<a href="#" class="btn btn-xs red" onclick="cancel_issuance('{{$issuance->id}}','{{$issuance->controlNum}}')">Cancel</a>
+												@else
+													<button disabled class="btn btn-xs red">Cancel</button>
+												@endif
 												@endif
 											@endif
 										</td>

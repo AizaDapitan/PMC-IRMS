@@ -70,4 +70,28 @@ class LoginController extends Controller
         $saveLogs = $this->auditService->create($request,"Logout User : ". auth()->user()->username,"Logout");
         return auth()->logout() ?? redirect()->route('login');
     }
+    public function adminLogin()
+    {
+        return view('auth.adminlogin');
+    }
+    public function adminSubmit(Request $request)
+    {
+        $checker = auth()->attempt([
+            'username' => $request->username,
+            'password' => $request->password,
+            'status' => 'ACTIVE',
+        ]);
+        if ($checker) {
+            if(auth()->user()->role == "ADMIN"){
+                $saveLogs = $this->auditService->create($request,"Login User : ". auth()->user()->username,"Admin Login");      
+                return redirect()->route('maintenance.application.index');
+            }
+            else
+            {
+                abort(503);
+            }
+        } else {
+            return redirect()->back()->withErrors('Invalid login credentials.');
+        }
+    }
 }

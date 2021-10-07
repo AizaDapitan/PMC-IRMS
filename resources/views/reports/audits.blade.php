@@ -16,12 +16,13 @@
 
 
 <!-- BEGIN SIDEBAR CONTENT LAYOUT -->
-<div class="main">
-    <div class="container">
-        <div class="col-md-12 tab-style-1">
-            <!-- BEGIN BREADCRUMBS -->
-           <h3 class="page-title">
-		USER ACTIONS REPORT
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+		<h3 class="page-title">
+		User Action Report
 		</h3>
 		<ul class="page-breadcrumb breadcrumb">
 			<li>
@@ -34,11 +35,16 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a href="{{ route('users.index') }}">User Actions Report</a>
+				<a href="{{ route('ppe-types.index') }}">User Actions Report</a>
 			</li>
 		</ul>
-            </div>
-            <!-- END BREADCRUMBS -->
+		<!-- END PAGE TITLE & BREADCRUMB-->
+	</div>
+</div>
+<!-- END PAGE HEADER-->
+
+
+
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -153,8 +159,6 @@
         </div>
         <!-- END PAGE BASE CONTENT -->
     </div>
-</div>
-</div>
 <!-- END SIDEBAR CONTENT LAYOUT -->
 @stop
 @section('pagejs')

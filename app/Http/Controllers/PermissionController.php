@@ -5,16 +5,28 @@ namespace App\Http\Controllers;
 use App\Permission;
 use App\Module;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Permissions Maintenance");
+
+        $view = $rolesPermissions['view'];
+        if (!$view) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+
         $pagename = 'Permissions';
         $pagination = 10;
 
@@ -37,7 +49,7 @@ class PermissionController extends Controller
         $modules = Module::orderBy('description','asc')->get();
         $permissions = $permissions->paginate($pagination);
         
-        return view('maintenance.permission.index',compact('pagename','permissions','modules'));
+        return view('maintenance.permission.index',compact('pagename','permissions','modules','create','edit'));
                         
     }
 

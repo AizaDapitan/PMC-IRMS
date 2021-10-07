@@ -10,7 +10,7 @@ class ItemCategory extends Model implements AuditableContract
     use Auditable;
     protected $table = "category";
 	protected $fillable = ['category', 'addedBy'];
-     protected $auditInclude = ['category', 'addedBy'];
+    protected $auditInclude = ['category', 'addedBy'];
     public $timestamps = true;
 
     public function getLastDateModifiedAttribute()
