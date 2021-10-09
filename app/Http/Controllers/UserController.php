@@ -76,7 +76,7 @@ class UserController extends Controller
         if (!$rolesPermissions['create']) {
             abort(401);
         }
-        $pagename = 'Create User';
+        $pagename = 'Add New User';
 
         $roles = Role::where('active', '1')->get();
 
@@ -147,7 +147,7 @@ class UserController extends Controller
         if (!$rolesPermissions['edit']) {
             abort(401);
         }
-        $pagename = 'Edit User';
+        $pagename = 'Update User';
 
         $user = User::find($id);
 

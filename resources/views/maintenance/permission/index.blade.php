@@ -56,9 +56,9 @@
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
 							@if($create)
-								<a class="btn blue" data-toggle="modal" href="#basic" onclick="addPermission()"> Add New </a>	
+								<a class="btn blue" data-toggle="modal" href="#basic" onclick="addPermission()"> Add New <i class="fa fa-plus"></i></a>	
 							@else
-								<button disabled class="btn blue" data-toggle="modal" href="#basic"> Add New </button>	
+								<button disabled class="btn blue" data-toggle="modal" href="#basic"> Add New <i class="fa fa-plus"></i></button>	
 							@endif					
 						</div>
 						<div class="btn-group pull-right">

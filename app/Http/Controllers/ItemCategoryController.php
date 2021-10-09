@@ -75,14 +75,14 @@ class ItemCategoryController extends Controller
     {
         if (ItemCategory::where('category', $request->name)->exists()) {
 
-            return back()->with('duplicate', 'Category is already in the list.');
+            return back()->with('duplicate', 'PPE Item is already in the list.');
         } else {
             ItemCategory::create([
                 'category' => $request->name,
                 'addedBy' => auth()->user()->username,
             ]);
 
-            return back()->with('success', 'Category has been added.');
+            return back()->with('success', 'PPE Item has been added.');
         }
     }
 
@@ -135,14 +135,14 @@ class ItemCategoryController extends Controller
     {
         ItemCategory::find($request->catid)->update(['category' => $request->name,'addedBy' => auth()->user()->username]);
 
-        return back()->with('success', 'Category details has been updated.');
+        return back()->with('success', 'PPE Item details has been updated.');
     }
 
     public function category_delete(Request $request)
     {
         ItemCategory::find($request->catid)->delete();
 
-        return back()->with('success', 'Category has been deleted.');
+        return back()->with('success', 'PPE Item has been deleted.');
     }
 
     public function category_multiple_delete(Request $request)
@@ -153,6 +153,6 @@ class ItemCategoryController extends Controller
             ItemCategory::find($id)->delete();
         }
 
-        return back()->with('success', 'Selected categories has been deleted.');
+        return back()->with('success', 'Selected PPE Item has been deleted.');
     }
 }

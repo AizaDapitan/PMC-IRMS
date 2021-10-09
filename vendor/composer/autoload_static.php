@@ -551,6 +551,7 @@ class ComposerStaticInit69fd3fbcf842f491df9ad991f9487f70
         'App\\IssuanceHeader' => __DIR__ . '/../..' . '/app/IssuanceHeader.php',
         'App\\ItemCategory' => __DIR__ . '/../..' . '/app/ItemCategory.php',
         'App\\ItemType' => __DIR__ . '/../..' . '/app/ItemType.php',
+        'App\\Log' => __DIR__ . '/../..' . '/app/Log.php',
         'App\\Module' => __DIR__ . '/../..' . '/app/Module.php',
         'App\\Notifications\\EmailNotification' => __DIR__ . '/../..' . '/app/Notifications/EmailNotification.php',
         'App\\PPEConfig' => __DIR__ . '/../..' . '/app/PPEConfig.php',

@@ -76,7 +76,7 @@ class ItemTypeController extends Controller
     public function store(Request $request)
     {
         if (ItemType::where('type', $request->name)->exists()) {
-            return back()->with('duplicate', 'PPE name is already in the list.');
+            return back()->with('duplicate', 'PPE Type is already in the list.');
         } else {
             ItemType::create([
                 'main' => $request->category,
@@ -84,7 +84,7 @@ class ItemTypeController extends Controller
                 'addedBy' => auth()->user()->username,
             ]);
 
-            return back()->with('success', 'PPE item has been added.');
+            return back()->with('success', 'PPE Type has been added.');
         }
     }
 
@@ -142,14 +142,14 @@ class ItemTypeController extends Controller
 
         ]);
 
-        return back()->with('success', 'PPE item details has been updated.');
+        return back()->with('success', 'PPE Type details has been updated.');
     }
 
     public function item_delete(Request $request)
     {
         ItemType::find($request->itemid)->delete();
 
-        return back()->with('success', 'PPE item has been deleted.');
+        return back()->with('success', 'PPE Type has been deleted.');
     }
 
     public function item_multiple_delete(Request $request)
@@ -160,6 +160,6 @@ class ItemTypeController extends Controller
             ItemType::find($id)->delete();
         }
 
-        return back()->with('success', 'Selected PPE items has been deleted.');
+        return back()->with('success', 'Selected PPE Type has been deleted.');
     }
 }

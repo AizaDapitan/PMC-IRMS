@@ -29,7 +29,7 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a href="#">Edit User</a>
+				<a href="#">Update User</a>
 			</li>
 		</ul>
 		<!-- END PAGE TITLE & BREADCRUMB-->
@@ -83,8 +83,8 @@
 							</div>
 						</div>
 						<div class="form-actions right">
-							<button type="submit" class="btn green">Update</button>
-							<a href="{{ route('users.index') }}" type="button" class="btn default">Cancel</a>
+							<button type="submit" class="btn green">Update User</button>
+							<a href="{{ route('users.index') }}" type="button" class="btn default">Close</a>
 						</div>
 					</form>
 					<!-- END FORM-->

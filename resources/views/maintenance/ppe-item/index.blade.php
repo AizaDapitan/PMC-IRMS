@@ -179,7 +179,7 @@
 	<div id="add-ppe-item" class="modal fade" tabindex="-1">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			<h4 class="modal-title">Add New PPE Item</h4>
+			<h4 class="modal-title">Add New Type</h4>
 		</div>
 		<form autocomplete="off" method="post" action="{{ route('ppe-types.store') }}">
 			@csrf
@@ -212,7 +212,7 @@
 	<div id="update-item" class="modal fade" tabindex="-1">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			<h4 class="modal-title">Update Item</h4>
+			<h4 class="modal-title">Update Type</h4>
 		</div>
 		<form method="post" action="{{ route('ppe-item.update') }}">
 			@csrf

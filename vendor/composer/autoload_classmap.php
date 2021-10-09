@@ -49,6 +49,7 @@ return array(
     'App\\IssuanceHeader' => $baseDir . '/app/IssuanceHeader.php',
     'App\\ItemCategory' => $baseDir . '/app/ItemCategory.php',
     'App\\ItemType' => $baseDir . '/app/ItemType.php',
+    'App\\Log' => $baseDir . '/app/Log.php',
     'App\\Module' => $baseDir . '/app/Module.php',
     'App\\Notifications\\EmailNotification' => $baseDir . '/app/Notifications/EmailNotification.php',
     'App\\PPEConfig' => $baseDir . '/app/PPEConfig.php',

@@ -55,9 +55,9 @@
 
 						<div class="btn-group pull-right" style="margin-left: 5px;">
 							@if($create)
-								<a class="btn blue" href="{{ route('users.create') }}">Add New User<i class="fa fa-plus"></i></a>
+								<a class="btn blue" href="{{ route('users.create') }}">Add New <i class="fa fa-plus"></i></a>
 							@else
-								<button disabled class="btn blue">Add New User<i class="fa fa-plus"></i></button>
+								<button disabled class="btn blue">Add New <i class="fa fa-plus"></i></button>
 							@endif
 						</div>
 						<div class="btn-group pull-right">
@@ -107,8 +107,8 @@
 									<td>{{ $user->location }}</td>
 									<td>{{ $user->status }}</td>
 									<td>{{ $user->lastdatemodified }}</td>
-									<td>
-										<a href="#" class="btn btn-xs blue-madison">View</a>
+									<td>																				
+										<a href="#" class="btn btn-xs blue-madison" onclick="view_user('{{$user->id}}','{{$user->name}}','{{$user->username}}','{{$user->role}}','{{$user->location}}','{{$user->status}}','{{$user->email}}')">View </a>
 										
 										@if($edit)
 											@if($user->status == 'ACTIVE')
@@ -195,6 +195,59 @@
 			</div>
 		</form>
 	</div>
+
+	<div id="view-user" class="modal fade" tabindex="-1">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			<h4 class="modal-title">View User</h4>			
+		</div>
+		<form method="post" action="{{ route('role.update') }}">
+			@csrf
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<input type="hidden" name="nameid" id="nameid">
+
+						<label class="control-label">Name <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="name" id="ename" placeholder="Name" readonly>
+						</p>
+
+						<label class="control-label">Username <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="username" id="eusername" placeholder="Username" readonly>
+						</p>
+
+						<label class="control-label">Role <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="role" id="erole" placeholder="Role" readonly>
+						</p>
+
+						<label class="control-label">Location <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="location" id="elocation" placeholder="Location" readonly>
+						</p>					
+
+						<label class="control-label">Status <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="status" id="estatus" placeholder="Status" readonly>
+						</p>	
+
+						<label class="control-label">Email <span class="required" aria-required="true"> * </span></label>
+						<p>							
+							<input class="form-control" type="text" name="email" id="eemail" placeholder="Email" readonly>
+						</p>							
+
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>				
+			</div>
+		</form>
+	</div>
+
 @endsection
 
 @section('pagejs')
@@ -248,5 +301,18 @@
 
 			$('#user-status').modal('show');
 		}
+
+		function view_user(id,name,username,role,location,status,email)
+		{
+			$('#nameid').val(id);			
+			$('#ename').val(name);
+			$('#eusername').val(username);
+			$('#erole').val(role);
+			$('#elocation').val(location);
+			$('#estatus').val(status);
+			$('#eemail').val(email);			
+			$('#view-user').modal('show');
+		}
+				
 	</script>
 @endsection
